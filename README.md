@@ -388,7 +388,7 @@ hello, world!
 ┌──(mordecai㉿kali)-[~/workspace/projects/lab03/solver_lib]
 └─$ touch CMakeLists.txt
                                                                                 
-''' CMakeLists.txt
+''' CMakeLists.txt:
 cmake_minimum_required(VERSION 3.4)
 project(solver_lib)
 set(CMAKE_CXX_STANDARD 11)
