@@ -1,16 +1,14 @@
 cmake_minimum_required(VERSION 3.4)
-
-project(hello_world)
-
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
-add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib formatter_ex_lib_dir)
-
-add_executable(hello_world ${CMAKE_CURRENT_SOURCE_DIR}/hello_world.cpp)
-
-target_include_directories(hello_world PUBLIC
-${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib
+set(CMAKE_TRY_COMPILE_TARGET_TYPE "STATIC_LIBRARY")
+project(hell CXX)
+add_executable(hell hello_world.cpp)
+set_target_properties(
+	hell PROPERTIES
+	CXX_STANDARD 17
+	CXX_STANDARD_REQUIRED ON
 )
-
-target_link_libraries(hello_world formatter_ex_lib)
+target_include_directories(hell
+	PUBLIC
+	../formatter_ex_lib
+)
+target_link_libraries(hell formatter_ex)
