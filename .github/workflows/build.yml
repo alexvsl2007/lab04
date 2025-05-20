@@ -1,0 +1,68 @@
+name: Formatter CI
+
+on:
+  push:
+    branches: 
+    - main
+    - master
+
+  workflow_dispatch:
+
+jobs:
+  build-libraries:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc, clang]
+    
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake ${{ matrix.compiler }}
+
+      - name: Build formatter_lib
+        run: |
+          cd formatter_lib
+          mkdir build && cd build
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+          cmake --build .
+
+      - name: Build formatter_ex_lib
+        run: |
+          cd formatter_ex_lib
+          mkdir build && cd build
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+          cmake --build .
+
+      - name: Build solver_lib
+        run: |
+          cd solver_lib
+          mkdir build && cd build
+          cmake -DCMAKE_CXX_COMPILER=${{ matrix.compiler }} ..
+          cmake --build .
+
+  build-applications:
+    runs-on: ubuntu-latest
+    needs: build-libraries
+    
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build Hello World
+        run: |
+          mkdir build_hello && cd build_hello
+          cmake ..
+          cmake --build .
+          cd hello_world_application
+          ./hello_world
+
+      - name: Build Solver
+        run: |
+          mkdir build_solver && cd build_solver
+          cmake ..
+          cmake --build .
+          cd solver_application
+          ./solve 1 1 1
