@@ -1,78 +1,36 @@
-name: Formatter
+name: CMake Build
 
 on:
   push:
-    branches: 
-    - master
-
-  workflow_dispatch:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
 jobs:
-  Build-library:
-    # The type of runner that the job will run on
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+    - uses: actions/checkout@v2
 
-      - name: Build formatter_lib
-        shell: bash
-        run: |
-          cd formatter_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-          
-      - name: Build formatter_ex_lib
-        shell: bash
-        run: |
-          cd formatter_ex_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-      - name: Build solver_lib
-        shell: bash
-        run: |
-          cd solver_lib
-          mkdir build_ && cd build_
-          cmake ..
-          cmake --build .
-  
-  Hello-world:
-    runs-on: ubuntu-latest
-    needs: [ Build-library ]
-    
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Build Hello_world
-        shell: bash
-        run: |
-          mkdir build1 && cd build1
-          cmake ..
-          cmake --build .
-  
-      - name: writer
-        shell: bash
-        run: |
-          cd build1/hello_world_application
-          ./hell
-  Build-solver:
-    runs-on: ubuntu-latest
-    needs: [ Build-library ]
-    
-    steps:
-      - uses: actions/checkout@v2
-      
-      - name: Build solver_application
-        shell: bash
-        run: |
-          mkdir build2 && cd build2
-          cmake ..
-          cmake --build .
-          
-      - name: writer
-        shell: bash
-        run: |
-          cd build2/solver_application
-          ./solve 1 1 1
+    - name: Install dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential cmake
+
+    - name: Create Build Directory
+      run: mkdir -p build
+
+    - name: Configure CMake
+      working-directory: ./build
+      run: cmake .. -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build
+      working-directory: ./build
+      run: cmake --build . --config Release
+
+    - name: Run tests
+      working-directory: ./build
+      run: |
+        ./hello_world_application/hello_world
+        ./solver_application/solve <<< "1 -3 2"
