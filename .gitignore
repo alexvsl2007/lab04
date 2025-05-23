@@ -1,0 +1,19 @@
+# Build directories
+build/
+*/build/
+
+# Generated files
+*.a
+*.so
+*.o
+*.out
+*.exe
+
+# Editor files
+*~
+*.swp
+.DS_Store
+
+# IDE files
+.vscode/
+.idea/
