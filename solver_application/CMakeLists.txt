@@ -5,12 +5,6 @@ add_executable(solve
     equation.cpp
 )
 
-target_include_directories(solve
-    PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/../formatter_ex_lib
-    ${CMAKE_CURRENT_SOURCE_DIR}/../solver_lib
-)
-
 target_link_libraries(solve
     PRIVATE
     formatter_ex
