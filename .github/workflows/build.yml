@@ -21,7 +21,9 @@ jobs:
       - name: Build with ${{ matrix.compiler }}
         run: |
           mkdir -p _build && cd _build
-          cmake .. -DCMAKE_C_COMPILER=${{ matrix.compiler }} -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}++
+          cmake .. \
+            -DCMAKE_C_COMPILER=${{ matrix.compiler }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}++
           cmake --build .
           
   build_Windows:
