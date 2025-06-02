@@ -17,13 +17,11 @@ jobs:
         compiler: [gcc, clang]
     steps:
       - uses: actions/checkout@v4
-
-      - name: Build with ${{ matrix.compiler }}
-        run: |
+      - run: |
           mkdir -p _build && cd _build
-          cmake .. \
-            -DCMAKE_C_COMPILER=${{ matrix.compiler }} \
-            -DCMAKE_CXX_COMPILER=${{ matrix.compiler }}++
+          export CC=gcc
+          export CXX=g++
+          cmake ..
           cmake --build .
           
   build_Windows:
